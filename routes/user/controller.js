@@ -1,4 +1,5 @@
 require("dotenv").config();
+// const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -30,19 +31,19 @@ module.exports = {
             try {
               user = new User({
                 username: req.body.username,
-                password: hash,
-                email: req.body.email
+                email: req.body.email,
+                password: hash
               });
-              user.password = await bcrypt.hash(user.password, 10);
+              // user.password = await bcrypt.hash(user.password, 10);
               await user.save();
 
-              const token = user.generateAuthToken();
-              res.header("x-auth-token", token).send({
-                _id: user._id,
-                username: user.username,
-                email: user.email
-                //   token
-              });
+              // const token = user.generateAuthToken();
+              // res.header("x-auth-token", token).send({
+              //   _id: user._id,
+              //   username: user.username,
+              //   email: user.email
+              //   //   token
+              // });
               res.status(200).send({
                 message: "created user success",
                 user
@@ -68,8 +69,8 @@ module.exports = {
     try {
       //   const { email, password } = req.body
       let user = await User.findOne({ email: req.body.email });
-      //   const user = await user.findOne ({ where : { email } })
-      let valid = bcrypt.compareSync(req.body.password, user.password);
+
+      let valid = await bcrypt.compare(req.body.password, user.password);
 
       if (valid) {
         const token = await jwt.sign({ data: user }, process.env.JWT_PRIVATE, { expiresIn: "1h" });
@@ -79,10 +80,11 @@ module.exports = {
           user
         });
       } else {
-        res.status(400).send({
-          message: "invalid username or password"
-          //   error: error.message
-        });
+        // res.status(400).send({
+        //   message: "invalid username or password"
+        //   // error: error.message
+        // });
+        throw new Error("Invalid password");
       }
     } catch (error) {
       res.status(400).send({
@@ -92,10 +94,47 @@ module.exports = {
     }
   },
 
+  getAllUser: (req, res) => {
+    User.find({})
+      .then(result => {
+        res.send(result);
+      })
+      .catch(error => console.log(error));
+  },
+
   getUserById: async (req, res) => {
     try {
-      const user = await User.findById(req.user._id).select("-password");
+      const user = await User.findById(req.params.id).select("-password");
       res.send(user);
+    } catch (error) {
+      res.send({
+        error: error.message
+      });
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    try {
+      User.findOneAndDelete(
+        {
+          _id: req.params.id
+        },
+        {
+          rawResult: false
+        }
+      )
+        .then(result =>
+          res.send({
+            message: "user deleted",
+            User
+          })
+        )
+        .catch(error =>
+          res.send({
+            message: "delete user failed",
+            error: error.message
+          })
+        );
     } catch (error) {
       res.send({
         error: error.message
