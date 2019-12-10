@@ -4,7 +4,7 @@ var express = require("express");
 var router = express.Router();
 const auth = require("../../middleware/auth");
 
-const { addUser, login, getUserById, getAllUser, deleteUser } = require("./controller");
+const { addUser, login, getUserById, getAllUser, deleteUser, updateUser } = require("./controller");
 
 /* GET users listing. */
 // router.get("/", function(req, res, next) {
@@ -15,6 +15,7 @@ router.post("/", addUser);
 router.post("/login", login);
 router.get("/:id", auth, getUserById);
 router.get("/", getAllUser);
-router.delete("/:id", deleteUser);
+router.delete("/:id", auth, deleteUser);
+router.put("/:id", auth, updateUser);
 
 module.exports = router;

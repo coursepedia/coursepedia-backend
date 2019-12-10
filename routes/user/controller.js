@@ -140,5 +140,31 @@ module.exports = {
         error: error.message
       });
     }
+  },
+
+  updateUser: (req, res) => {
+    User.findOneAndUpdate(
+      {
+        _id: req.params.id
+      },
+      {
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+      },
+      function(err, result) {
+        if (err) {
+          res.status(400).send({
+            message: "error for updated",
+            err
+          });
+        } else {
+          res.status(200).send({
+            message: "update success",
+            result
+          });
+        }
+      }
+    );
   }
 };
