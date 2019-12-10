@@ -12,7 +12,7 @@ module.exports = {
       });
     }
 
-    if (rating > 5 && rating < 1) {
+    if (rating > 5 || rating < 1) {
       return res.status(409).send({
         message: "rating point invalid, please give rating with 1-5 number"
       });
