@@ -73,10 +73,10 @@ module.exports = {
       let valid = await bcrypt.compare(req.body.password, user.password);
 
       if (valid) {
-        const token = await jwt.sign({ data: user }, process.env.JWT_PRIVATE, { expiresIn: "1h" });
+        // const token = await jwt.sign({ data: user }, process.env.JWT_PRIVATE, { expiresIn: "1h" });
         res.status(200).send({
           message: "login success",
-          token,
+          // token,
           user
         });
       } else {
