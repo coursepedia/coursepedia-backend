@@ -3,7 +3,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { User, validate } = require("../../models/user");
+const { User, validateUser } = require("../../models/user");
 
 module.exports = {
   // user register
@@ -16,7 +16,7 @@ module.exports = {
         });
       }
       // validate the request body first
-      const { error } = validate(req.body);
+      const { error } = validateUser(req.body);
       if (error) {
         return res.status(400).send(error.details[0].message);
       }

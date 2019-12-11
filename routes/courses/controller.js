@@ -113,7 +113,7 @@ module.exports = {
         {
           _id: req.params.id
         },
-        { name: req.body.name, address: req.body.address, phoneNumber: req.body.phoneNumber, price: req.body.price, rating: req.body.rating, imageUrl: req.body.imageUrl },
+        { name: req.body.name, address: req.body.address, phoneNumber: req.body.phoneNumber, price: req.body.price, rating: req.body.rating, ageCategory: req.body.ageCategory, fieldCategory: req.body.fieldCategory, imageUrl: req.body.imageUrl },
         (error, result) => {
           try {
             res.status(200).send({

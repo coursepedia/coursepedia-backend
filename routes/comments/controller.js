@@ -87,5 +87,11 @@ module.exports = {
         error: error.message
       });
     }
+  },
+
+  updateComment: (req, res) => {
+    Comments.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+      .then(result => res.send({ message: "edit comment succcess", result }))
+      .catch(error => res.send({ message: "failed to edit comment", error: error.message }));
   }
 };
