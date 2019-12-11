@@ -12,7 +12,7 @@ const { addUser, login, getUserById, getAllUser, deleteUser, updateUser } = requ
 // });
 
 router.post("/", addUser);
-router.post("/login", auth, login);
+router.post("/login", login);
 router.get("/:id", auth, getUserById);
 router.get("/", getAllUser);
 router.delete("/:id", auth, deleteUser);
