@@ -102,7 +102,7 @@ module.exports = {
   },
 
   updateCourse: async (req, res) => {
-    const existedCourse = await Courses.findOne({ _id: objectId(req.params.id) });
+    const existedCourse = await Courses.findOne({ name: req.body.name });
 
     if (existedCourse) {
       return res.status(409).send({

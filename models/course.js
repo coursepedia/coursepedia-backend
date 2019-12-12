@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 var courseSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true
+  },
   address: String,
   phoneNumber: String,
   price: Number,

@@ -39,7 +39,7 @@ app.use(function(err, req, res, next) {
 
   // send the error page
   res.status(err.status || 500);
-  res.send("error");
+  res.send(err.stack);
 });
 
 module.exports = app;

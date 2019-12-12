@@ -5,10 +5,10 @@ const auth = require("../../middleware/auth");
 
 const { addCourse, getAllCourse, deleteCourse, getOneCourse, updateCourse } = require("../courses/controller");
 
-router.post("/", auth, addCourse);
+router.post("/", addCourse);
 router.get("/", getAllCourse);
 router.get("/:id", getOneCourse);
-router.delete("/:id", auth, deleteCourse);
-router.put("/:id", auth, updateCourse);
+router.delete("/:id", deleteCourse);
+router.put("/:id", updateCourse);
 
 module.exports = router;
