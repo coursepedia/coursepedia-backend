@@ -73,17 +73,17 @@ module.exports = {
       let valid = await bcrypt.compare(req.body.password, user.password);
 
       if (valid) {
-        // const token = await jwt.sign({ data: user }, process.env.JWT_PRIVATE, { expiresIn: "1h" });
+        const token = await jwt.sign({ data: user }, process.env.JWT_PRIVATE, { expiresIn: "1h" });
         res.status(200).send({
           message: "login success",
-          // token,
+          token,
           user
         });
       } else {
-        // res.status(400).send({
-        //   message: "invalid username or password"
-        //   // error: error.message
-        // });
+        res.status(400).send({
+          message: "invalid username or password"
+          // error: error.message
+        });
         throw new Error("Invalid password");
       }
     } catch (error) {
