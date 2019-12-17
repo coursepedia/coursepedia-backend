@@ -7,13 +7,19 @@ const Comments = require("../../models/comment");
 module.exports = {
   addCommentToPostByUser: async (req, res) => {
     try {
-      const { users, courses } = req.body;
+      const { users, courseId, content } = req.body;
+      console.log(req.body);
 
       const newComment = await Comments.create({
-        ...req.body
+        content,
+        users
       });
       const user = await User.findOne({ _id: objectId(users) });
-      const course = await Courses.findOneAndUpdate({ _id: objectId(courses) }, { $push: { comments: newComment._id } }, { new: true });
+      const course = await Courses.findOneAndUpdate(
+        { _id: objectId(courseId) },
+        { $push: { comments: newComment._id } },
+        { new: true }
+      );
 
       return res.status(201).json({
         message: `adding comment from ${user.username} success. Thank you for your comment.`,
@@ -39,7 +45,9 @@ module.exports = {
   },
 
   deleteComment: async (req, res) => {
-    const existedComment = await Comment.findOne({ _id: objectId(req.params.id) });
+    const existedComment = await Comment.findOne({
+      _id: objectId(req.params.id)
+    });
 
     if (existedComment) {
       Comment.findOneAndDelete(
@@ -92,6 +100,8 @@ module.exports = {
   updateComment: (req, res) => {
     Comments.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(result => res.send({ message: "edit comment succcess", result }))
-      .catch(error => res.send({ message: "failed to edit comment", error: error.message }));
+      .catch(error =>
+        res.send({ message: "failed to edit comment", error: error.message })
+      );
   }
 };
