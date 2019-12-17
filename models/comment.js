@@ -7,12 +7,12 @@ var commentSchema = new Schema(
     users: {
       type: Schema.Types.ObjectId,
       ref: "User"
-    },
+    }
     // courses: {
     //   type: Schema.Types.ObjectId,
     //   ref: "Courses"
     // },
-    date: Date
+    // date: Date
   },
   {
     timestamps: true
