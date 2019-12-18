@@ -2,7 +2,8 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
-const MONGODB_URI = process.env.MONGODB_URI || `mongodb://localhost:27017/test`;
+const NODE_ENV = process.env.NODE_ENV || "development";
+const MONGODB_URI = NODE_ENV !== "development" ? process.env.MONGODB_URI : `mongodb://localhost:27017/coursepedia_development`;
 
 // console.log(process.env);
 

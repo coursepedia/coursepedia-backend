@@ -5,8 +5,9 @@ const Courses = require("../../models/course");
 
 module.exports = {
   addCourse: async (req, res) => {
-    const { name, address, phoneNumber, price, rating, ageCategory, fieldCategory } = req.body;
-    if (!name || !address || !phoneNumber || !price || !rating || !ageCategory || !fieldCategory) {
+    console.log(req.body);
+    const { name, address, phoneNumber, price, rating, ageCategory, fieldCategory, imageUrl } = req.body;
+    if (!name || !address || !phoneNumber || !price || !rating || !ageCategory || !fieldCategory || !imageUrl) {
       return res.status(409).send({
         message: "body can't be empty"
       });
@@ -18,7 +19,7 @@ module.exports = {
       });
     }
 
-    const existedCourse = await Courses.findOne({ _id: objectId(req.params.id) });
+    const existedCourse = await Courses.findOne({ name });
 
     if (existedCourse) {
       return res.status(409).send({
