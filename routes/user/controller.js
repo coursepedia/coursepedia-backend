@@ -2,6 +2,7 @@ require("dotenv").config();
 // const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const { User, validateUser } = require("../../models/user");
 
@@ -167,5 +168,50 @@ module.exports = {
 				}
 			}
 		);
+	},
+
+	sendEmailToUser: async (req, res) => {
+		let transporter = nodemailer.createTransport({
+			service: "gmail",
+			secure: false, // true for 465, false for other ports
+			auth: {
+				user: "ladagakomodo@gmail.com", // generated ethereal user
+				pass: "ladagaKomodo11!" // generated ethereal password
+			}
+		});
+
+		let message = {
+			from: "LaDaGa  👻 <ladagakomodo@gmail.com>",
+			to: req.body.email,
+			subject: req.body.subject,
+			text: "Thanks for contacting us",
+			html: "<p>Thanks for contacting us</p>",
+			amp: `<!doctype html>
+      <html ⚡4email>
+        <head>
+          <meta charset="utf-8">
+          <style amp4email-boilerplate>body{visibility:hidden}</style>
+          <script async src="https://cdn.ampproject.org/v0.js"></script>
+          <script async custom-element="amp-anim" src="https://cdn.ampproject.org/v0/amp-anim-0.1.js"></script>
+        </head>
+        <body>
+          <p>Image: <amp-img src="https://cldup.com/P0b1bUmEet.png" width="16" height="16"/></p>
+          <p>GIF (requires "amp-anim" script in header):<br/>
+            <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350"/></p>
+        </body>
+      </html>`
+		};
+
+		await transporter.sendMail(message, err => {
+			if (err) {
+				res.status(400).send({
+					message: "error send email to user"
+				});
+			} else {
+				res.status(200).send({
+					message: "email sent!"
+				});
+			}
+		});
 	}
 };
