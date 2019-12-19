@@ -5,21 +5,16 @@ const Courses = require("../../models/course");
 
 module.exports = {
   addCourse: async (req, res) => {
-    console.log(req.body);
     const { name, address, phoneNumber, price, rating, ageCategory, fieldCategory, imageUrl } = req.body;
     if (!name || !address || !phoneNumber || !price || !rating || !ageCategory || !fieldCategory || !imageUrl) {
-      return res.status(409).send({
+      return res.status(400).send({
         message: "body can't be empty"
       });
     }
 
-    if (rating > 5 || rating < 1) {
-      return res.status(409).send({
-        message: "rating point invalid, please give rating with 1-5 number"
-      });
-    }
-
     const existedCourse = await Courses.findOne({ name });
+
+    console.log(existedCourse);
 
     if (existedCourse) {
       return res.status(409).send({
